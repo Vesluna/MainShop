@@ -1,0 +1,89 @@
+ very new to Git; I only recently created a GitHub account.
+
+I've just tried to push my very first repository (a sample project), but I'm getting the following error:
+
+No such remote 'origin'
+I ran the following commands:
+
+git init
+git commit -m "first commit"
+git remote add origin https://github.com/VijayNew/NewExample.git
+git push -u origin master
+However, when I ran git commit -m "first commit", I got the following message:
+
+nothing added to commit but untracked files present (use "git add" to track)
+So then I tried to set origin, using
+
+git remote set-url origin https://github.com/VijayNew/NewExample.git
+But I got the following error:
+
+No such remote 'origin'
+What did I do wrong, and what should I do?
+
+gitgithubpushgit-remote
+Share
+Improve this question
+Follow
+edited Mar 12, 2019 at 20:41
+jub0bs's user avatar
+jub0bs
+66.6k2727 gold badges195195 silver badges196196 bronze badges
+asked Aug 26, 2014 at 9:59
+Vijay's user avatar
+Vijay
+3,52233 gold badges2626 silver badges3333 bronze badges
+1
+between the init and the commit add a "git add ." step. What output does "git remote" (or git remote -v") offer you? – 
+user745733
+ CommentedAug 26, 2014 at 10:03
+2
+git remote -v Nothing is Display. – 
+Vijay
+ CommentedAug 26, 2014 at 10:05
+Well it seems the origin as not been properly saved then. – 
+aymericbeaumet
+ CommentedAug 26, 2014 at 10:05 
+2
+did you add 'git add' ????? – 
+Raja Simon
+ CommentedAug 26, 2014 at 10:17
+7
+When you are starting a new repository, the first REMOTE command should be git remote add origin git@abc.com:mygit, if you run git remote set-url origin git@abc.com:mygit you will get error message: No such remote 'origin'. I run into the same problem, and it took a few minutes before I figure this out. Hope this can help others. – 
+Kemin Zhou
+ CommentedMar 3, 2017 at 0:28
+Show 8 more comments
+4 Answers
+Sorted by:
+
+Highest score (default)
+297
+
+Two problems:
+
+1 - You never told Git to start tracking any file
+You write that you ran
+
+git init
+git commit -m "first commit"
+and that, at that stage, you got
+
+nothing added to commit but untracked files present (use "git add" to track).
+Git is telling you that you never told it to start tracking any files in the first place, and it has nothing to take a snapshot of. Therefore, Git creates no commit. Before attempting to commit, you should tell Git (for instance):
+
+Hey Git, you see that README.md file idly sitting in my working directory, there? Could you put it under version control for me? I'd like it to go in my first commit/snapshot/revision...
+
+For that you need to stage the files of interest, using
+
+git add README.md
+before running
+
+git commit -m "some descriptive message"
+2 - You haven't set up the remote repository
+You then ran
+
+git remote add origin https://github.com/VijayNew/NewExample.git
+After that, your local repository should be able to communicate with the remote repository that resides at the specified URL (https://github.com/VijayNew/NewExample.git)... provided that remote repo actually exists! However, it seems that you never created that remote repo on GitHub in the first place: at the time of writing this answer, if I try to visit the correponding URL, I get
+
+enter image description here
+
+Before attempting to push to that remote repository, you need to make sure that the latter actually exists. So go to GitHub and create the remote repo in question. Then and only then will you be able to successfully push with
