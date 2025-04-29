@@ -1,9 +1,6 @@
-// This file contains JavaScript for the root GitHub Pages landing page
+// This script handles any additional functionality needed for the landing page
+// Currently, it's just a simple script to enhance the GitHub Pages redirect experience
+
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('KarmaTsukino Shop - Root page loaded');
-  
-  // Automatically redirect to the main application
-  setTimeout(function() {
-    window.location.href = './client/public/index.html';
-  }, 2000); // Redirect after 2 seconds if meta refresh doesn't work
+  console.log('KarmaTsukino Shop - Redirecting to main application...');
 });
