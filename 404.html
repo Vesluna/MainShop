@@ -1,12 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Redirecting to KarmaTsukino Shop</title>
-  <meta http-equiv="refresh" content="0; URL=./">
-  <link rel="canonical" href="./">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found - KarmaTsukino Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .error-code {
+      font-size: 6rem;
+      color: #9c67ff;
+      margin: 0;
+      line-height: 1;
+    }
+    
+    .error-message {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .return-btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: #9c67ff;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+    
+    .return-btn:hover {
+      background-color: #8a4bff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(156, 103, 255, 0.4);
+    }
+  </style>
 </head>
 <body>
-  Redirecting to <a href="./">KarmaTsukino Shop</a>...
+  <div class="redirect-container">
+    <div class="redirect-message">
+      <p class="error-code">404</p>
+      <h1>Page Not Found</h1>
+      <p class="error-message">The page you're looking for doesn't exist or has been moved.</p>
+      <a href="./index.html" class="return-btn">Return to Shop</a>
+    </div>
+  </div>
 </body>
 </html>
