@@ -1,20 +1,14 @@
-MUSIC FILES PLACEMENT
+MUSIC FILES FOR KARMATSUKINO SHOP
 
-The application is looking for the following music files:
-1. toby-fox-shop-theme.mp3 - Toby Fox's "Shop Theme" from Undertale
-2. wii-shop-remix.mp3 - "Wii Shop Channel Remix"
+The music player expects the following MP3 files to be placed in this directory:
 
-For copyright reasons, these files are not included in the repository. 
-To use the music feature:
+1. toby-fox-shop-theme.mp3 - Undertale Shop Theme by Toby Fox
+2. wii-shop-remix.mp3 - Wii Shop Channel theme remix
 
-1. Obtain the music files legally (purchase, create your own version, or use royalty-free alternatives)
-2. Place them in this directory (/public/music/) with the exact filenames mentioned above
-3. Restart the application
+Due to copyright restrictions, these files are not included in the repository.
+You will need to add these files manually after cloning the repository.
 
-Note on Copyright:
-- Using copyrighted music without proper licensing may violate copyright laws
-- Consider using royalty-free alternatives for public deployment
-- This feature is primarily intended for personal/educational use
-
-The music player will still display without the files, but will not be able to play music
-until the files are added.
+Adding Custom Music:
+1. Place your MP3 files in this directory
+2. Update the musicTracks.ts file in client/src/lib/musicTracks.ts to reference your files
+3. Restart the application to see your tracks in the music player

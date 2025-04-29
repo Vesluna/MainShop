@@ -2,7 +2,10 @@
 
 A modern, interactive online shop for game passes with a cinematic introduction sequence. The shop features Roblox game passes, donation options, and information about upcoming Scratch projects.
 
-![Game Pass Shop Screenshot](screenshot.png) <!-- Replace this with an actual screenshot of your app -->
+<!-- Your KarmaTsukino Shop Screenshot will appear here -->
+<!-- For now, description of how the shop looks: -->
+<!-- A modern interactive shop with eye-opening animation, featuring Roblox game passes and Donation options -->
+<!-- The shop has a dark mode aesthetic with interactive elements and background music -->
 
 ## Features
 
@@ -38,8 +41,8 @@ A modern, interactive online shop for game passes with a cinematic introduction 
 
 1. Clone the repository
    ```sh
-   git clone https://github.com/yourusername/karmatsukino-shop.git
-   cd karmatsukino-shop
+   git clone https://github.com/Vesluna/MainShop.git
+   cd MainShop
    ```
 
 2. Install dependencies
