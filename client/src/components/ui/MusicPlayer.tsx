@@ -48,10 +48,23 @@ export function MusicPlayer() {
     if (!audioRef.current) return;
     
     if (isPlaying) {
-      audioRef.current.play().catch(error => {
-        console.error("Error playing audio:", error);
-        setIsPlaying(false);
-      });
+      // Check if the file exists before attempting to play
+      fetch(audioRef.current.src)
+        .then(response => {
+          if (response.ok) {
+            audioRef.current?.play().catch(error => {
+              console.error("Error playing audio:", error);
+              setIsPlaying(false);
+            });
+          } else {
+            console.warn(`Audio file not found: ${audioRef.current?.src}`);
+            setIsPlaying(false);
+          }
+        })
+        .catch(error => {
+          console.error("Error checking audio file:", error);
+          setIsPlaying(false);
+        });
     } else {
       audioRef.current.pause();
     }
@@ -79,7 +92,20 @@ export function MusicPlayer() {
       // Small timeout to allow audio to load
       setTimeout(() => {
         if (audioRef.current) {
-          audioRef.current.play().catch(console.error);
+          // Check if the file exists before attempting to play
+          fetch(audioRef.current.src)
+            .then(response => {
+              if (response.ok) {
+                audioRef.current?.play().catch(error => {
+                  console.warn("Error playing next track:", error);
+                });
+              } else {
+                console.warn(`Audio file not found: ${audioRef.current?.src}`);
+              }
+            })
+            .catch(error => {
+              console.warn("Error checking audio file:", error);
+            });
         }
       }, 50);
     }
@@ -103,7 +129,20 @@ export function MusicPlayer() {
       audioRef.current.pause();
       setTimeout(() => {
         if (audioRef.current) {
-          audioRef.current.play().catch(console.error);
+          // Check if the file exists before attempting to play
+          fetch(audioRef.current.src)
+            .then(response => {
+              if (response.ok) {
+                audioRef.current?.play().catch(error => {
+                  console.warn("Error playing selected track:", error);
+                });
+              } else {
+                console.warn(`Audio file not found: ${audioRef.current?.src}`);
+              }
+            })
+            .catch(error => {
+              console.warn("Error checking audio file:", error);
+            });
         }
       }, 50);
     }
