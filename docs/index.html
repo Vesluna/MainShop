@@ -5,14 +5,113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KarmaTsukino Shop</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Redirect to the main application -->
-  <meta http-equiv="refresh" content="0;url=../client/public/index.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
-  <div class="redirect-message">
-    <h1>KarmaTsukino Shop</h1>
-    <p>If you are not redirected automatically, follow <a href="../client/public/index.html">this link</a>.</p>
+  <div class="shop-container">
+    <header>
+      <h1>KarmaTsukino Shop</h1>
+      <div class="theme-toggle">
+        <button id="themeToggle">🌙 / ☀️</button>
+      </div>
+    </header>
+    
+    <section class="intro">
+      <h2>Welcome to My Shop</h2>
+      <p>Browse game passes and more for my Roblox and Scratch games!</p>
+    </section>
+    
+    <section class="music-player">
+      <h3>Shop Music</h3>
+      <div class="player-controls">
+        <button id="playPauseBtn">▶️ Play</button>
+        <select id="trackSelector">
+          <option value="undertale">Undertale - Shop Theme (Toni Leys Remix)</option>
+          <option value="wii">Wii Shopping Channel Remix - Nicky Flowers</option>
+        </select>
+      </div>
+    </section>
+    
+    <section class="categories">
+      <h3>Game Pass Categories</h3>
+      <div class="category-buttons">
+        <button class="category-btn active" data-category="all">All</button>
+        <button class="category-btn" data-category="dusk">Dusk</button>
+        <button class="category-btn" data-category="donation">Donation</button>
+      </div>
+    </section>
+    
+    <section class="products">
+      <div class="product-grid" id="productGrid">
+        <!-- Products will be loaded here -->
+        <div class="product-card" data-category="donation">
+          <div class="product-badge popular">POPULAR</div>
+          <h4>Basic Donation</h4>
+          <p class="price">R$25</p>
+          <p class="description">Support the development of my games!</p>
+          <button class="buy-btn">Add to Cart</button>
+        </div>
+        
+        <div class="product-card" data-category="donation">
+          <div class="product-badge new">NEW</div>
+          <h4>Bronze Donation</h4>
+          <p class="price">R$75</p>
+          <p class="description">Support development and get special thanks!</p>
+          <button class="buy-btn">Add to Cart</button>
+        </div>
+        
+        <div class="product-card" data-category="donation">
+          <div class="product-badge new">NEW</div>
+          <h4>Ultimate Donation</h4>
+          <p class="price">R$250</p>
+          <p class="description">Get your name in the credits of my games!</p>
+          <button class="buy-btn">Add to Cart</button>
+        </div>
+        
+        <div class="product-card" data-category="dusk">
+          <div class="product-badge">COMING SOON</div>
+          <h4>Dusk: Extra Lives</h4>
+          <p class="price">R$50</p>
+          <p class="description">Get additional lives in the horror survival game Dusk!</p>
+          <button class="buy-btn">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+    
+    <footer>
+      <p>&copy; 2025 KarmaTsukino Shop. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#" id="tosLink">Terms of Service</a>
+        <a href="#" id="privacyLink">Privacy Policy</a>
+        <a href="https://scratch.mit.edu/users/coolcats153122/" target="_blank">Scratch Profile</a>
+        <a href="https://scratch.mit.edu/studios/36783153/comments" target="_blank">Contact</a>
+      </div>
+    </footer>
   </div>
+  
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <h2>Terms of Service</h2>
+      <div class="terms-text">
+        <p>Welcome to KarmaTsukino Shop. By using this service, you agree to the following terms:</p>
+        <ul>
+          <li>All purchases are voluntary donations and do not constitute gambling</li>
+          <li>No refunds are provided for virtual goods</li>
+          <li>Game passes may be subject to changes</li>
+          <li>User accounts and passes may be terminated for violation of terms</li>
+        </ul>
+      </div>
+      <div class="modal-buttons">
+        <button id="acceptTerms">I Agree</button>
+        <button id="declineTerms">I Decline</button>
+      </div>
+    </div>
+  </div>
+  
+  <audio id="backgroundMusic" loop>
+    <!-- Audio source will be set via JavaScript -->
+  </audio>
+  
   <script src="script.js"></script>
 </body>
 </html>
