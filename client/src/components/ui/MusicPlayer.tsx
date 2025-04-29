@@ -1,28 +1,42 @@
 import { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, Play, Pause, Music, ChevronDown, ChevronUp, ListMusic } from 'lucide-react';
+import { Volume2, VolumeX, Play, Pause, Music, ListMusic } from 'lucide-react';
 import { Button } from './button';
 import { MUSIC_TRACKS } from '@/lib/musicTracks';
 
 export function MusicPlayer() {
+  // Player state
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [volume, setVolume] = useState(0.5);
   const [isVisible, setIsVisible] = useState(false);
   const [showTrackList, setShowTrackList] = useState(false);
+  const [musicFilesAvailable, setMusicFilesAvailable] = useState<boolean | null>(null);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
-  // Initialize audio when component mounts
+  // Check if music files exist
+  useEffect(() => {
+    fetch(MUSIC_TRACKS[0].src)
+      .then(response => {
+        setMusicFilesAvailable(response.ok);
+      })
+      .catch(() => {
+        setMusicFilesAvailable(false);
+      });
+  }, []);
+  
+  // Initialize audio when component mounts or track changes
   useEffect(() => {
     const audio = new Audio(MUSIC_TRACKS[currentTrackIndex].src);
-    audio.loop = false; // Don't loop individual tracks, we'll handle progression
-    audio.volume = volume;
+    audio.loop = false; // Don't loop individual tracks, we handle progression
+    audio.volume = isMuted ? 0 : volume;
     audioRef.current = audio;
     
     // Auto-play next track when one ends
     const handleTrackEnd = () => {
-      nextTrack();
+      const newIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
+      setCurrentTrackIndex(newIndex);
     };
     
     audio.addEventListener('ended', handleTrackEnd);
@@ -32,7 +46,7 @@ export function MusicPlayer() {
       audio.pause();
       audioRef.current = null;
     };
-  }, [currentTrackIndex]);
+  }, [currentTrackIndex, volume, isMuted]);
   
   // Show player after a short delay
   useEffect(() => {
@@ -53,7 +67,7 @@ export function MusicPlayer() {
         .then(response => {
           if (response.ok) {
             audioRef.current?.play().catch(error => {
-              console.error("Error playing audio:", error);
+              console.warn("Could not play audio:", error);
               setIsPlaying(false);
             });
           } else {
@@ -61,8 +75,7 @@ export function MusicPlayer() {
             setIsPlaying(false);
           }
         })
-        .catch(error => {
-          console.error("Error checking audio file:", error);
+        .catch(() => {
           setIsPlaying(false);
         });
     } else {
@@ -70,87 +83,39 @@ export function MusicPlayer() {
     }
   }, [isPlaying]);
   
-  // Volume control
-  useEffect(() => {
-    if (!audioRef.current) return;
-    audioRef.current.volume = isMuted ? 0 : volume;
-  }, [volume, isMuted]);
-  
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
-  
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
+  // User actions
+  const togglePlay = () => setIsPlaying(!isPlaying);
+  const toggleMute = () => setIsMuted(!isMuted);
   
   const nextTrack = () => {
     const newIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
     setCurrentTrackIndex(newIndex);
-    if (isPlaying && audioRef.current) {
-      audioRef.current.pause();
-      // Small timeout to allow audio to load
-      setTimeout(() => {
-        if (audioRef.current) {
-          // Check if the file exists before attempting to play
-          fetch(audioRef.current.src)
-            .then(response => {
-              if (response.ok) {
-                audioRef.current?.play().catch(error => {
-                  console.warn("Error playing next track:", error);
-                });
-              } else {
-                console.warn(`Audio file not found: ${audioRef.current?.src}`);
-              }
-            })
-            .catch(error => {
-              console.warn("Error checking audio file:", error);
-            });
-        }
-      }, 50);
-    }
   };
   
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
+    
     if (isMuted && newVolume > 0) {
       setIsMuted(false);
     }
+    
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
   };
   
-  const currentTrack = MUSIC_TRACKS[currentTrackIndex];
-  
-  // Handle selecting a track from the list
   const selectTrack = (index: number) => {
     if (index === currentTrackIndex) return;
     setCurrentTrackIndex(index);
-    if (isPlaying && audioRef.current) {
-      audioRef.current.pause();
-      setTimeout(() => {
-        if (audioRef.current) {
-          // Check if the file exists before attempting to play
-          fetch(audioRef.current.src)
-            .then(response => {
-              if (response.ok) {
-                audioRef.current?.play().catch(error => {
-                  console.warn("Error playing selected track:", error);
-                });
-              } else {
-                console.warn(`Audio file not found: ${audioRef.current?.src}`);
-              }
-            })
-            .catch(error => {
-              console.warn("Error checking audio file:", error);
-            });
-        }
-      }, 50);
-    }
-    // Hide the track list after selection on mobile
+    
+    // Hide track list on mobile after selection
     if (window.innerWidth < 768) {
       setShowTrackList(false);
     }
   };
+  
+  const currentTrack = MUSIC_TRACKS[currentTrackIndex];
 
   return (
     <div 
@@ -185,6 +150,8 @@ export function MusicPlayer() {
             size="icon" 
             className="h-8 w-8 text-purple-300 hover:text-purple-100 hover:bg-purple-900/50"
             onClick={togglePlay}
+            disabled={musicFilesAvailable === false}
+            title={musicFilesAvailable === false ? "Music files not available" : "Play/Pause"}
           >
             {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
           </Button>
@@ -195,11 +162,19 @@ export function MusicPlayer() {
             size="icon" 
             className="h-8 w-8 text-purple-300 hover:text-purple-100 hover:bg-purple-900/50"
             onClick={toggleMute}
+            disabled={musicFilesAvailable === false}
           >
             {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
           </Button>
         </div>
       </div>
+      
+      {/* Warning message when music files are missing */}
+      {musicFilesAvailable === false && (
+        <div className="text-xs text-yellow-400 bg-yellow-900/30 p-1.5 rounded border border-yellow-800/50 mt-1">
+          Music files not found. Please add MP3 files to the <code>client/public/music</code> directory.
+        </div>
+      )}
       
       {/* Controls: volume slider and next button */}
       <div className="flex items-center gap-2">
@@ -210,6 +185,7 @@ export function MusicPlayer() {
           step="0.01"
           value={volume}
           onChange={handleVolumeChange}
+          disabled={musicFilesAvailable === false}
           className="w-full h-1.5 appearance-none bg-purple-900 rounded-full outline-none
                    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3
                    [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full
@@ -221,6 +197,7 @@ export function MusicPlayer() {
           size="sm"
           className="text-xs h-7 px-2 bg-purple-950/50 border-purple-800 hover:bg-purple-900"
           onClick={nextTrack}
+          disabled={musicFilesAvailable === false}
         >
           Next
         </Button>

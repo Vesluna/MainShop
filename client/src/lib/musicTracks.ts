@@ -25,14 +25,14 @@ export const MUSIC_TRACKS: Track[] = [
   {
     id: "toby-fox-shop",
     name: "Shop Theme (Toni Leys Remix)",
-    src: "/music/undertale-shop-theme-toni-leys-remix.mp3", 
+    src: "/music/Undertale - Shop Theme (Toni Leys Remix).mp3", 
     artist: "Toby Fox / Toni Leys",
     info: "Remix of Undertale Shop Theme"
   },
   {
     id: "wii-shop",
     name: "Wii Shopping Channel Remix",
-    src: "/music/wii-shopping-channel-nicky-flowers.mp3",
+    src: "/music/Wii Shopping Channel Remix - Nicky Flowers.mp3",
     artist: "Nicky Flowers",
     info: "Remix of Wii Shop Channel theme"
   },
