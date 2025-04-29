@@ -16,7 +16,7 @@ export function MusicPlayer() {
   // Initialize audio when component mounts
   useEffect(() => {
     const audio = new Audio(MUSIC_TRACKS[currentTrackIndex].src);
-    audio.loop = true;
+    audio.loop = false; // Don't loop individual tracks, we'll handle progression
     audio.volume = volume;
     audioRef.current = audio;
     

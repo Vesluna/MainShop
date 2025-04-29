@@ -24,17 +24,17 @@ export interface Track {
 export const MUSIC_TRACKS: Track[] = [
   {
     id: "toby-fox-shop",
-    name: "Shop Theme",
-    src: "/music/toby-fox-shop-theme.mp3", 
-    artist: "Toby Fox",
-    info: "From Undertale"
+    name: "Shop Theme (Toni Leys Remix)",
+    src: "/music/undertale-shop-theme-toni-leys-remix.mp3", 
+    artist: "Toby Fox / Toni Leys",
+    info: "Remix of Undertale Shop Theme"
   },
   {
     id: "wii-shop",
-    name: "Wii Shop Remix",
-    src: "/music/wii-shop-remix.mp3",
-    artist: "Nintendo (Remix)",
-    info: "Wii Shop Channel theme"
+    name: "Wii Shopping Channel Remix",
+    src: "/music/wii-shopping-channel-nicky-flowers.mp3",
+    artist: "Nicky Flowers",
+    info: "Remix of Wii Shop Channel theme"
   },
   // Add more tracks here following the same format
   // Example:
