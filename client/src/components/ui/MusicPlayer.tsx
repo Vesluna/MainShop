@@ -90,6 +90,26 @@ export function MusicPlayer() {
   const nextTrack = () => {
     const newIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
     setCurrentTrackIndex(newIndex);
+    
+    // If currently playing, ensure the next track auto-plays
+    if (isPlaying) {
+      // Small timeout to allow audio to load
+      setTimeout(() => {
+        if (audioRef.current) {
+          fetch(audioRef.current.src)
+            .then(response => {
+              if (response.ok) {
+                audioRef.current?.play().catch(error => {
+                  console.warn("Could not play next track:", error);
+                });
+              }
+            })
+            .catch(() => {
+              console.warn("Error checking audio file");
+            });
+        }
+      }, 100);
+    }
   };
   
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,6 +128,27 @@ export function MusicPlayer() {
   const selectTrack = (index: number) => {
     if (index === currentTrackIndex) return;
     setCurrentTrackIndex(index);
+    
+    // Auto-play the selected track
+    if (isPlaying || true) { // Always autoplay on selection
+      // Small timeout to allow audio to load after index change
+      setTimeout(() => {
+        if (audioRef.current) {
+          fetch(audioRef.current.src)
+            .then(response => {
+              if (response.ok) {
+                setIsPlaying(true); // Ensure player state is set to playing
+                audioRef.current?.play().catch(error => {
+                  console.warn("Could not play selected track:", error);
+                });
+              }
+            })
+            .catch(() => {
+              console.warn("Error checking audio file");
+            });
+        }
+      }, 100);
+    }
     
     // Hide track list on mobile after selection
     if (window.innerWidth < 768) {
